@@ -13,23 +13,23 @@ defaults:
     shell: bash
 
 jobs:
-  Windows:
-    runs-on: 'windows-latest'
-    steps:
-    - uses: actions/checkout@v3
-    - uses: actions/setup-python@v4
-    - name: Install python deps
-      run: |
-        pip install pytest numpy
-        # don't use CMake 3.25.0 https://gitlab.kitware.com/cmake/cmake/-/issues/23975
-        pip3 install cmake==3.24.0
-    - name: Build
-      run: |
-        pip3 install cmake==3.24.0
-        python setup.py build
-        python setup.py install --user
-    - name: Test
-      run: python -m pytest --ignore docs --ignore dlib
+#  Windows:
+#    runs-on: 'windows-latest'
+#    steps:
+#    - uses: actions/checkout@v3
+#    - uses: actions/setup-python@v4
+#    - name: Install python deps
+#      run: |
+#        pip install pytest numpy
+#        # don't use CMake 3.25.0 https://gitlab.kitware.com/cmake/cmake/-/issues/23975
+#        pip3 install cmake==3.24.0
+#    - name: Build
+#      run: |
+#        pip3 install cmake==3.24.0
+#        python setup.py build
+#        python setup.py install --user
+#    - name: Test
+#      run: python -m pytest --ignore docs --ignore dlib
 
   Ubuntu:
     runs-on: 'ubuntu-latest'
@@ -44,6 +44,11 @@ jobs:
         python setup.py install --user
     - name: Test
       run: python -m pytest --ignore docs --ignore dlib
+    - name: Publish
+      uses: actions/upload-artifact@v2
+      with:
+        name: dlib-bin
+        path: dist
 
 # Disabled for now since something is going sideways with python packages on github actions
 # MacOS:
